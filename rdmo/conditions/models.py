@@ -122,11 +122,14 @@ class Condition(models.Model):
 
         source_values = list(source_values)
         if not source_values:
-            # try one level higher
             if set_prefix:
+                # try one level higher
                 rpartition = set_prefix.rpartition('|')
                 set_prefix, set_index = rpartition[0], int(rpartition[2])
                 return self.resolve(values, set_prefix, set_index)
+            else:
+                # return True if no value was found
+                return True
 
         if self.relation == self.RELATION_EQUAL:
             return self._resolve_equal(source_values)
